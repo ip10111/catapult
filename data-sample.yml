@@ -1,0 +1,15 @@
+clientname:
+    host: example.com
+    user: ftp_user_name
+    pass: ftp_password
+    path: public_html
+clientname1:
+    host: example1.com
+    user: ftp_user_name
+    pass: ftp_password
+    path: httpdoc
+clientname1:
+    host: example1.com
+    user: ftp_user_name
+    pass: ftp_password
+    path: www
