@@ -19,9 +19,11 @@ import logging
 import docopt
 import yaml
 import tqdm
+import colorama
 
 def main(args):
     initiate()
+    app = App()
 
     # Read arguments
     path = args['<source_path>']
@@ -29,37 +31,37 @@ def main(args):
     request = args['--only']
 
     # Check if package exist
-    App.label_secondary('Checking upload folder ', '')
+    app.label_secondary('Checking upload folder ', '')
     if os.path.isdir(path) is not True:
-        App.label_danger()
+        app.label_danger()
         sys.exit()
     else:
-        App.success()
+        app.label_success()
 
     # Check if yaml readable
-    App.label_secondary('Reading YAML data ', '')
+    app.label_secondary('Reading YAML data ', '')
     try:
         data = yaml.safe_load( open(data, 'r') )
     except:
-        App.label_danger()
+        app.label_danger()
         sys.exit()
-    App.label_success()
+    app.label_success()
 
     # process --only options 
     if request is not None:
-        App.label_secondary('Finding data key: ', '')
+        app.label_secondary('Finding data key: ', '')
 
         if request in data:
             requested_data = data[request]
             data.clear()
             data[request] = requested_data
-            App.label_success()
+            app.label_success()
         else:
-            App.label_danger()
+            app.label_danger()
             sys.exit()
 
     # Loop through data
-    for k in tqdm( data.keys() ):	
+    for k in tqdm.tqdm( data.keys() ):	
         
         # sleep(0.1)
         logging.info('Processing ' + data[k]['host'])
@@ -87,28 +89,28 @@ class App:
     VER = '1.0.0'
 
     def label_primary(self, text, endl = '\n'):
-        print(Style.BRIGHT + Fore.BLUE + text + Style.RESET_ALL, end = endl)
+        print(colorama.Style.BRIGHT + colorama.Fore.BLUE + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_secondary(self, text, endl = '\n'):
-        print(Style.BRIGHT + Fore.BLACK + text + Style.RESET_ALL, end = endl)
+        print(colorama.Style.BRIGHT + colorama.Fore.BLACK + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_success(self, text='Ok', endl = '\n'):
-        print(Style.BRIGHT + Fore.GREEN + text + Style.RESET_ALL, end = endl)
+        print(colorama.Style.BRIGHT + colorama.Fore.GREEN + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_danger(self, text='Fail', endl = '\n'):
-        print(Style.BRIGHT + Fore.RED + text + Style.RESET_ALL, end = endl)
+        print(colorama.Style.BRIGHT + colorama.Fore.RED + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_warning(self, text='Warning', endl = '\n'):
-        print(Style.BRIGHT + Fore.YELLOW + text + Style.RESET_ALL, end = endl)
+        print(colorama.Style.BRIGHT + colorama.Fore.YELLOW + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_info(self, text, endl = '\n'):
-        print(Fore.CYAN + text + Style.RESET_ALL, end = endl)
+        print(colorama.Fore.CYAN + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_light(self, text, endl = '\n'):
-        print(Back.BLUE + Style.BRIGHT + Fore.YELLOW + text + Style.RESET_ALL, end = endl)
+        print(colorama.Back.BLUE + colorama.Style.BRIGHT + colorama.Fore.YELLOW + text + colorama.Style.RESET_ALL, end = endl)
 
     def label_dark(self, text, endl = '\n'):
-        print(Back.WHITE + Style.BRIGHT + Fore.BLACK + text + Style.RESET_ALL, end = endl)
+        print(colorama.Back.WHITE + colorama.Style.BRIGHT + colorama.Fore.BLACK + text + colorama.Style.RESET_ALL, end = endl)
 
 def initiate():
     dirname = 'logs'
